@@ -1,0 +1,65 @@
+.scrollableCategoryContent{
+  display: grid;
+  grid-auto-flow: column;
+  background-color: black;
+  /* gap: 55%; */
+  /* max-width: 200px; */
+  width: 1000px;
+  height: 480px;
+  overflow-x: scroll;
+  overflow-y: clip;
+  /* overflow-y: hidden; */
+  /* position: relative; */
+  
+}
+
+.Game1, .Game2, .Game3, .Game4 {
+  
+  /* position: relative;
+  background-color: crimson;
+  white-space: nowrap; */
+}
+/* 
+.Game1{
+  position: absolute;
+  left: 0px;
+}
+.Game2{
+  position: absolute;
+  left: 580px ;
+} */
+
+.cardAnchorConteirner{
+  width: 100%;
+  height: 100%;
+  /* left: 100px;
+  display: inline-block; */
+  position: relative;
+  
+}
+
+.cardImage{
+  position: absolute;
+  /* overflow: clip; */
+  /* position: relative; */
+}
+.textCardBackGround {
+  position: absolute;
+  /* padding: 0px;
+ bottom: 10px;
+ margin: 0px; */
+ background-color: aqua;
+ width: 100%;
+ height: 20%;
+ left: 0px;
+ right: 0px;
+ bottom: 20%;
+
+ /* position: absolute; */
+
+}
+.cardTitleText{
+  /* position: absolute; */
+  color: white;
+  
+}

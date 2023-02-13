@@ -1,0 +1,284 @@
+.main{
+  
+  /* inset: 0px; */
+  background-color: #ffff;
+  /* background-color: blue; */
+  box-shadow: 0 2px 4px 0 rgb(0, 0, 0, 0.08);
+  width: 100%;
+  height: 48px;
+  padding: 15px 15px 15px 15px;
+  position: relative;
+}
+
+.animationButton {
+  display: flex;
+  /* flex-direction: row-reverse; */
+  
+  
+  /* box-shadow: blue; */
+  align-items: center;
+  justify-content: space-between;
+  
+
+  /* padding: 30px 15px 30px 15px; */
+}
+.animationButtonReverse {
+  display: flex;
+  flex-direction: row-reverse;
+
+  /* box-shadow: 0 2px 4px 0 rgb(0, 0, 0, 0.08); */
+  box-shadow: blue;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffff;
+  /* width: 100%;
+  height: 48px; */
+  
+}
+
+
+.logoMini {
+ 
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 109.19px;
+  overflow: hidden;
+  height: 33;
+}
+.BurguerMenu {
+  display: block;
+  border-style: none;
+  /* border-color: crimson; */
+  justify-content: space-between;
+  background-color: transparent;
+  color: black;
+  width: 24px;
+  height: 22px;
+  padding: 0;
+  position: relative;
+  z-index: 20;
+}
+
+.searchIcon {
+  z-index: 10;
+  /* width: 24px;
+  height: 24px; */
+  
+  background-color: transparent;
+  /* background-color: transparent;
+  color: #ffff; */
+}
+
+.navMenu {
+  position: fixed;
+  opacity: 0;
+}
+
+.navMenuOpen {
+  display: flex;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  opacity: 100;
+  width: 100vw;
+  padding: 0 16px 0px 16px;
+  background-color: #ffff;
+  z-index: 20;
+  animation-name: sliderNavMenuOpen;
+  animation-duration: 2s;
+}
+
+@keyframes sliderNavMenuOpen {
+  0% {
+    width: 0vw;
+  }
+  100% {
+    width: 100vw;
+  }
+}
+
+@keyframes sliderNavMenuClose {
+  0% {
+    width: 100vw;
+    display: flex;
+ 
+    position: fixed;
+    
+    left: 0px;
+    top: 0px;
+    flex-direction: column;
+    opacity: 100;
+    width: 100vw;
+    padding: 0 16px 0px 16px;
+    background-color: #ffff;
+    z-index: 20;
+    
+  }
+  100% {
+    
+    position: fixed;
+   
+    left: 0px;
+    top: 0px;
+    width: 0vw;
+  }
+}
+
+.navMenuOpen ul {
+  width: 100%;
+  height: 100vh;
+}
+.navMenuOpen li:nth-child(1) {
+  display: flex;
+  font-size: 30px;
+  justify-content: space-between;
+  background-color: aqua;
+}
+
+.navMenuOpen li:nth-child(n + 2):nth-last-child(n + 5) {
+  font-size: 16px;
+}
+.navMenuOpen li:nth-last-child(-n + 4) {
+  font-size: 10px;
+}
+
+.navMenuClosed > * {
+  width: 0px;
+  pointer-events: none;
+  position: fixed;
+  opacity: 0;
+  width: 0px;
+  height: 0px;
+  padding: 0 px;
+  color: #ffff;
+  background-color: #ffff;
+  animation-name: sliderNavMenuClose;
+  animation-duration: 2s;
+}
+
+.navMenuClosedNoAnimation{
+  width: 0;
+  pointer-events: none;
+  position: fixed;
+  opacity: 0;
+  width: 0px;
+  height: 0px;
+  padding: 0 px;
+}
+.navMenuClosed li:nth-child(1) {
+  display: flex;
+  font-size: 30px;
+  justify-content: space-between;
+  background-color: aqua;
+}
+
+.navMenuClosed ul {
+  width: 100%;
+  height: 100vh;
+}
+
+.navMenu {
+  visibility: visible;
+}
+.navMenu > * {
+  visibility: visible;
+}
+
+/* 
+.liSlideItem {
+  transition: .2s all ease-in-out;
+ 
+} */
+
+.liSlideItem{
+
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 16;
+  box-shadow: 10px rgb(0, 0, 0, 0.08);
+  animation-name: fadeIn;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+}
+
+.closeButton{
+  border-style: none;
+  background-color: transparent;
+}
+
+@keyframes fadeIn {
+  0%{
+    opacity: 0;
+    overflow: hidden;
+    transform: translate(-300%);
+    color: green;
+   
+  }
+  100%{
+    opacity: 1;
+    transform: translate(0%);
+    color: violet;
+    /* opacity: 1; */
+  }
+}
+
+
+
+.lineOne, .lineTwo, .lineThree {
+  transform-origin: 0% 0%;
+  /* animation-direction: reverse; */
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  
+}
+
+
+
+ .lineOne{
+  animation-name: xBurguerMenuLineOne
+}
+.lineTwo{
+   animation-name: xBurguerMenuLineTwo
+}
+.lineThree{
+ animation-name: xBurguerMenuLineThree ;
+}
+
+@keyframes xBurguerMenuLineOne{
+ 0%{transform: rotate(0deg)}
+ /* 50%{ transform: rotate(45deg)} */
+  100%{
+    transform: rotate(45deg)  translateY(-20px) translateX(30px) ;
+      
+       
+  }
+
+}
+
+@keyframes xBurguerMenuLineTwo{
+  0%{transform: rotate(0deg)}
+  /* 50%{ transform: rotate(45deg)} */
+   100%{
+    transform: rotate(180deg);
+     color:transparent;
+     fill: transparent;
+     stroke: none;
+       
+        
+   }
+ 
+ }
+
+@keyframes xBurguerMenuLineThree{
+  0%{transform: rotate(0deg)}
+  /* 50%{ transform: rotate(45deg)} */
+   100%{
+     transform: rotate(-45deg)  translateY(-20px) translateX(-65px) ;
+       
+        
+   }
+ 
+ }

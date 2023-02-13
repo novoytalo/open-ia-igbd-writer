@@ -1,0 +1,46 @@
+<svg
+    className="logo-icon icon-search-2"
+    width="24px"
+    height="24px"
+    viewBox="0 0 24 24"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+>
+    <g
+        id="Symbols"
+        stroke="none"
+        strokeWidth="1"
+        fill="none"
+        fillRule="evenodd"
+        
+    >
+        <g id="2.-Glyphs-and-Controls/glyph-nav-search">
+            <!-- <rect
+                id="Rectangle"
+                fillOpacity="0"
+                fill="#D8D8D8"
+                x="0"
+                y="0"
+                width="24"
+                height="24"
+            ></rect> -->
+            <circle
+                id="Oval-2"
+                stroke="#252627"
+                strokeWidth="2"
+                cx="11"
+                cy="10"
+                r="7"
+            ></circle>
+            <path
+                d="M15.5,15.5 L20.7201533,20.7201533"
+                id="Line-4"
+                stroke="#252627"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            ></path>
+        </g>
+    </g>
+</svg>
