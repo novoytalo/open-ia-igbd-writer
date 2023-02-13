@@ -27,3 +27,4 @@ Create a platform that will consume the IGBD API, identify and authorize users, 
 Use only CSS and TypeScript for the frontend
 
 What's working: API paths and some basic navigation and authorization functions.
+?
