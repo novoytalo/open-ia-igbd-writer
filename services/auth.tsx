@@ -1,6 +1,6 @@
 import { async } from "@firebase/util";
 import CryptoJS from "crypto-js";
-import nookies, { parseCookies, setCookie } from "nookies";
+import nookies, { destroyCookie, parseCookies, setCookie } from "nookies";
 import {
     getIdToken,
     onAuthStateChanged,
@@ -8,8 +8,15 @@ import {
     User,
 } from "firebase/auth";
 import { Cookie } from "next-auth/core/lib/cookie";
-import React, { useState, useEffect, useContext, createContext } from "react";
+import React, {
+    useState,
+    useEffect,
+    useContext,
+    createContext,
+    useMemo,
+} from "react";
 import { auth } from "./firebase";
+import axios from "axios";
 interface interInicialState {
     isOpen: boolean;
     setIsOpen: (newState: boolean) => void;
@@ -38,7 +45,7 @@ export default function AuthProvider({ children }: any) {
     const [userInfo, setUserInfo] = useState<User | null>(
         inicialState.userInfo
     );
-    // useEffect(() => {
+
     onAuthStateChanged(auth, (user) => {
         if (user !== null) {
             console.log("logged in!: ", user);
@@ -48,49 +55,41 @@ export default function AuthProvider({ children }: any) {
         }
     });
     onIdTokenChanged(auth, (user) => {
-        console.log("onIdTokenChanged inside: ", user);
+        // console.log("onIdTokenChanged inside: ", user);
         setUserInfo(user);
         async function newTryToken() {
-            //need to inplement a criptograf.
-
             if (user !== null) {
                 const token = await getIdToken(user);
-                // const tokenNoCrypto = await getIdToken(user);
-                // setPassCookie(tokenNoCrypto);
-                // const token = tokenNoCrypto;
-                // const key = process.env.MY_SECRET_KEY?.toString()!;
+                const keyNull =
+                    process.env.NEXT_PUBLIC_MY_SECRET_KEY === undefined
+                        ? ""
+                        : process.env.NEXT_PUBLIC_MY_SECRET_KEY;
+                const key = keyNull.toString();
 
-                // const ciphertext = CryptoJS.AES.encrypt(token, key).toString();
-                nookies.set(undefined, "token", token, {
-                    // keys:process.env.,
-                    maxAge: 30 * 24 * 60 * 60,
-                    path: "/",
-                    secure: true,
-                    // sameSite: 'strict'
-                    secret: process.env.NEXT_PUBLIC_COOKIE_SECRET,
-                });
+                await axios({
+                    method: "post",
+                    url: "./api/cookiewithcript",
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        // I have to add cookie in the GET
+                        // Cookie: cookies.cookies,
+                        // Authorization: `Bearer ${passCookie}`,
+                        // Authorization: `Bearer ${passCookie}`,
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                    .then((resposta) =>
+                        console.log(` response from api 2`, resposta.data)
+                    )
+                    .catch((error) => console.log(error));
             } else {
+                console.log("cookie DESTROY!");
                 setPassCookie(undefined);
-                // setCookie(null, 'my-cookie-name', value, { ...options, secret: process.env.NEXT_PUBLIC_COOKIE_SECRET })
-                //   }
-                nookies.set(undefined, "token", "", {
-                    maxAge: 30 * 24 * 60 * 60,
-                    path: "/",
-                    secure: true,
-                    httpOnly: true,
-                    // sameSite: 'strict',
-                    secret: process.env.NEXT_PUBLIC_COOKIE_SECRET,
-                });
+                destroyCookie(undefined, "token", { path: "/" });
             }
         }
         newTryToken();
-
-        // const { accessToken } = user?.getIdTokenResult;
-        // console.log(
-        //     "token from AuthProvider",
-        //     //  user?.getIdTokenResult
-        //     userInfo?.getIdToken
-        // );
     });
     // }, []);
     return (

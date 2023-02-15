@@ -27,6 +27,7 @@ export default function Home(props: any) {
     console.log("cookies from frontend", props);
     function getToken() {
         console.log(passCookie);
+        // console.log("lol", props.cookies);
     }
     const { passCookie, setPassCookie } = useContext(UserContext);
     async function callApi() {
@@ -39,7 +40,7 @@ export default function Home(props: any) {
                 // I have to add cookie in the GET
                 // Cookie: cookies.cookies,
                 // Authorization: `Bearer ${passCookie}`,
-                Authorization: `${passCookie}`,
+                Authorization: `${props.cookies}`,
             },
         })
             .then((resposta) =>

@@ -56,7 +56,7 @@ export default function CardCompAlt(props: any) {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
     // try {
-    const { token } = await nookies.get(context);
+    const { token } = nookies.get(context);
     // console.log("cooookies!:", cookies);
 
     // onIdTokenChanged(auth, (user) => {

@@ -25,11 +25,12 @@ import { async } from "@firebase/util";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home(props: any) {
-    console.log("cookies from frontend", props.token);
+    console.log("cookies22 from frontend", props.token);
     function getToken() {
-        console.log(passCookie);
+        console.log("passCookie", passCookie);
     }
     const { passCookie, setPassCookie } = useContext(UserContext);
+    console.log("passCookie!: ", passCookie);
     async function callApi() {
         await axios({
             method: "post",
@@ -40,7 +41,8 @@ export default function Home(props: any) {
                 // I have to add cookie in the GET
                 // Cookie: cookies.cookies,
                 // Authorization: `Bearer ${passCookie}`,
-                Authorization: `${passCookie}`,
+                // Authorization: `Bearer ${passCookie}`,
+                Authorization: `Bearer ${props.token}`,
             },
         })
             .then((resposta) =>
