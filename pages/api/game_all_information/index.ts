@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { auth } from "../../../services/firebase-admin";
+import Tokens from "csrf";
 import CryptoJS from "crypto-js";
 import { type } from "os";
 // import { Auth, getAuth } from "firebase-admin/auth";
@@ -14,20 +15,33 @@ export default async function handler(
 ) {
     //comand line for the api
     const data_text = `fields *;\r\nwhere id < 1942;\r\nlimit 100;`;
-
+    const tokenCsrfFromFrontEnd = req.headers['x-csrf-token']!.toString()
+    
     //decript token from frontend
 
     // console.log(plaintext);
 
     try {
         // const tokenId:{value:string} = req.headers.cookie!
-        console.log("Before second api");
+
         const tokenIdDecrypt = await decryptIdToken(req, res);
-        console.log("After second api");
+
         if (!tokenIdDecrypt) {
             return res.status(401).end("Not a valid user");
         }
 
+        //////////////////////////////////
+        const tokenId =
+            req.headers.authorization === undefined
+                ? ""
+                : req.headers.authorization;
+        const tokenIIId = tokenId && tokenId.split(" ")[1];
+
+        const tokens = new Tokens();
+        if (!tokens.verify(process.env.NEXT_PRIVATE_CSRF_SECRET!, tokenCsrfFromFrontEnd)) {
+            return res.status(401).end("No valid token Csrf");
+        }
+        /////////////////////////////////
         const decodedToken = await //    admin
         // .
         auth
@@ -41,11 +55,11 @@ export default async function handler(
             })
             .catch((error) => {
                 // Handle error
-                res.status(401).end("Not a valid token");
+                res.status(401).end("Not a valid token firebase");
             });
         // });
 
-        if (req.method === "POST" && decodedToken) {
+        if (req.method === "POST" && tokenIdDecrypt) {
             const respost = await axios({
                 method: "post",
                 url: `${process.env.PUBLIC_NEST_DB_HOST}`,

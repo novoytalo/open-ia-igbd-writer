@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nookies, { destroyCookie, parseCookies, setCookie } from "nookies";
 import CryptoJS from "crypto-js";
+import  createToken from 'csrf';
 // import cookie from 'cookie';
 export default async function handlerEncryptToken(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
+    
     const IdtokenFireBase =
         req.headers.authorization === undefined
             ? ""

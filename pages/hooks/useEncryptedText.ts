@@ -1,6 +1,7 @@
 import CryptoJS from "crypto-js";
 import { useRef } from "react";
 
+//JUST A TEST
 function useEncryptedText(token: string, key: string): string {
   const encryptedTextRef = useRef<{ token: string; key: string; encryptedText: string }>({
     token: "",

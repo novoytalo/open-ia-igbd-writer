@@ -79,9 +79,32 @@ export default function AuthProvider({ children }: any) {
                         Authorization: `Bearer ${token}`,
                     },
                 })
-                    .then((resposta) =>
-                        console.log(` response from api 2`, resposta.data)
-                    )
+                    .then((resposta) => {
+                        console.log(` response from api 2`, resposta.data);
+
+                        ////////////////////////////////////
+                        //    async function creatCsrf (){
+                        //     await axios({
+                        //         method: "post",
+                        //         url: "./api/cookiewithcript",
+                        //         withCredentials: true,
+                        //         headers: {
+                        //             "Content-Type": "application/json",
+                        //             // I have to add cookie in the GET
+                        //             // Cookie: cookies.cookies,
+                        //             // Authorization: `Bearer ${passCookie}`,
+                        //             // Authorization: `Bearer ${passCookie}`,
+                        //             Authorization: `Bearer ${token}`,
+                        //         },
+                        //     })
+                        //         .then((resposta) =>
+                        //             console.log(` response from api 2`, resposta.data)
+                        //         )
+                        //         .catch((error) => console.log(error));
+                        //    }
+
+                        ///////////////////////////////////
+                    })
                     .catch((error) => console.log(error));
             } else {
                 console.log("cookie DESTROY!");

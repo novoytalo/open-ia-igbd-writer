@@ -5,7 +5,13 @@ import styles from "../styles/Home.module.css";
 
 import axios from "axios";
 import Link from "next/link";
-import { HtmlHTMLAttributes, useContext, useEffect, useRef } from "react";
+import {
+    HtmlHTMLAttributes,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { HtmlContext } from "next/dist/shared/lib/html-context";
 import Header from "./components/Header";
 import CarCompAlt from "./components/CardCompAlt";
@@ -25,12 +31,38 @@ import { async } from "@firebase/util";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home(props: any) {
+    ////////////////
+    const [csrfToken, setCsrfToken] = useState("");
+    useEffect(() => {
+        console.log("before axios :3");
+        axios({
+            method: "post",
+            url: "./api/csrftokengenerator",
+            // data: { animal: animal },
+            headers: {
+                "Content-Type": "application/json",
+                // I have to add cookie in the GET
+                // Cookie: cookies.cookies,
+                // Authorization: `Bearer ${passCookie}`,
+                Authorization: `Bearer ${props.token}`,
+            },
+        })
+            .then((resposta) => {
+                console.log(` setCsrfToken`, resposta.data);
+                setCsrfToken(resposta.data);
+            })
+            .catch((error) => console.log(error));
+        console.log("after axios :3");
+    }, [props.token]);
+    ////////////
+
     console.log("cookies22 from frontend", props.token);
     function getToken() {
         console.log("passCookie", passCookie);
     }
     const { passCookie, setPassCookie } = useContext(UserContext);
     console.log("passCookie!: ", passCookie);
+    /////////////////////////////////////////////////////////////
     async function callApi() {
         await axios({
             method: "post",
@@ -38,6 +70,7 @@ export default function Home(props: any) {
             withCredentials: true,
             headers: {
                 "Content-Type": "application/json",
+                "X-CSRF-Token": csrfToken,
                 // I have to add cookie in the GET
                 // Cookie: cookies.cookies,
                 // Authorization: `Bearer ${passCookie}`,
@@ -50,7 +83,7 @@ export default function Home(props: any) {
             )
             .catch((error) => console.log(error));
     }
-
+    //////////////////////////////////////////////////////////////
     async function callApiImages(gameId: number) {
         await axios({
             method: "post",
@@ -84,6 +117,7 @@ export default function Home(props: any) {
     }
 
     const referencial = useRef();
+
     return (
         <>
             <Head>
@@ -115,6 +149,7 @@ export default function Home(props: any) {
                 <button onClick={() => callOpenIaText("cobra")}>
                     callOpenIaText
                 </button>
+                <div>token on?{csrfToken}</div>
             </main>
         </>
     );

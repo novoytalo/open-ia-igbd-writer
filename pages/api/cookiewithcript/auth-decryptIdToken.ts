@@ -1,6 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import CryptoJS from 'crypto-js'
 import { auth } from "../../../services/firebase-admin";
+import Tokens from "csrf";
+
+///only one validation... put firebase auth admin or merge this to the origem call...
 
  const decryptIdToken =async (req:NextApiRequest, res:NextApiResponse) => {
     const tokenId= req.headers.authorization===undefined?'':req.headers.authorization

@@ -17,6 +17,7 @@
     "axios": "^1.2.2",
     "canvas": "^2.11.0",
     "crypto-js": "^4.1.1",
+    "csrf": "^3.1.0",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
     "firebase": "^9.17.1",
