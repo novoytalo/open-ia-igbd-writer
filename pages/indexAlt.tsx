@@ -15,8 +15,6 @@ import {
 import { HtmlContext } from "next/dist/shared/lib/html-context";
 import Header from "./components/Header";
 import CarCompAlt from "./components/CardCompAlt";
-import { authOptions } from "./api/auth/[...nextauth]";
-import { getServerSession } from "next-auth";
 import { parseCookies, setCookie, destroyCookie } from "nookies";
 import { auth } from "../services/firebase";
 import { UserContext } from "../services/auth";
@@ -34,7 +32,6 @@ export default function Home(props: any) {
     ////////////////
     const [csrfToken, setCsrfToken] = useState("");
     useEffect(() => {
-        console.log("before axios :3");
         axios({
             method: "post",
             url: "./api/csrftokengenerator",
@@ -48,25 +45,22 @@ export default function Home(props: any) {
             },
         })
             .then((resposta) => {
-                console.log(` setCsrfToken`, resposta.data);
                 setCsrfToken(resposta.data);
             })
             .catch((error) => console.log(error));
-        console.log("after axios :3");
     }, [props.token]);
     ////////////
 
-    console.log("cookies22 from frontend", props.token);
     function getToken() {
         console.log("passCookie", passCookie);
     }
     const { passCookie, setPassCookie } = useContext(UserContext);
-    console.log("passCookie!: ", passCookie);
+
     /////////////////////////////////////////////////////////////
     async function callApi() {
         await axios({
             method: "post",
-            url: "./api/game_all_information/",
+            url: "./api/game_all_information/all",
             withCredentials: true,
             headers: {
                 "Content-Type": "application/json",
@@ -83,11 +77,83 @@ export default function Home(props: any) {
             )
             .catch((error) => console.log(error));
     }
+
+    useEffect(() => {
+        //outside just a geral exemple
+        //const [data1, setData1] = useState(null);
+        //const [data2, setData2] = useState(null);
+        //inside useEffect
+        // const fetchData = async () => {
+        //     const [response1, response2] = await Promise.all([
+        //       axios.get("https://api.example.com/data1"),
+        //       axios.get("https://api.example.com/data2"),
+        //     ]);
+        //     setData1(response1.data);
+        //     setData2(response2.data);
+        //   };
+        //   fetchData();
+        axios({
+            method: "post",
+            url: "./api/game_all_information/all",
+            withCredentials: true,
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": csrfToken,
+                // I have to add cookie in the GET
+                // Cookie: cookies.cookies,
+                // Authorization: `Bearer ${passCookie}`,
+                // Authorization: `Bearer ${passCookie}`,
+                Authorization: `Bearer ${props.token}`,
+            },
+        })
+            .then((resposta) =>
+                console.log(` response from api all`, resposta.data)
+            )
+            .catch((error) => console.log(error));
+        axios({
+            method: "post",
+            url: "./api/game_all_information/date",
+            withCredentials: true,
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": csrfToken,
+                // I have to add cookie in the GET
+                // Cookie: cookies.cookies,
+                // Authorization: `Bearer ${passCookie}`,
+                // Authorization: `Bearer ${passCookie}`,
+                Authorization: `Bearer ${props.token}`,
+            },
+        })
+            .then((resposta) =>
+                console.log(` response from api date`, resposta.data)
+            )
+            .catch((error) => console.log(error));
+        axios({
+            method: "post",
+            url: "./api/game_all_information/search",
+            withCredentials: true,
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": csrfToken,
+                // I have to add cookie in the GET
+                // Cookie: cookies.cookies,
+                // Authorization: `Bearer ${passCookie}`,
+                // Authorization: `Bearer ${passCookie}`,
+                Authorization: `Bearer ${props.token}`,
+            },
+            //my text search in this case "sonic"
+            data: "sonic the hedgehog",
+        })
+            .then((resposta) =>
+                console.log(` response from api search`, resposta.data)
+            )
+            .catch((error) => console.log(error));
+    }, [csrfToken, props.token]);
     //////////////////////////////////////////////////////////////
     async function callApiImages(gameId: number) {
         await axios({
             method: "post",
-            url: "./api/images_for_id_game",
+            url: "./api/game_all_information/images_for_id_game",
 
             data: { gameId: gameId },
         })
@@ -107,7 +173,7 @@ export default function Home(props: any) {
                 // I have to add cookie in the GET
                 // Cookie: cookies.cookies,
                 // Authorization: `Bearer ${passCookie}`,
-                Authorization: `${passCookie}`,
+                Authorization: `Bearer ${props.token}`,
             },
         })
             .then((resposta) =>
@@ -157,7 +223,7 @@ export default function Home(props: any) {
 
 export async function getServerSideProps(ctx: any) {
     const cookies = ctx.req.cookies;
-    console.log("cooooookie", cookies.token);
+    // console.log("cooooookie", cookies.token);
     if (!cookies.token || cookies.token === "") {
         return {
             redirect: {

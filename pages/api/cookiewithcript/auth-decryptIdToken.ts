@@ -13,13 +13,13 @@ import Tokens from "csrf";
                 process.env.NEXT_PUBLIC_MY_SECRET_KEY === undefined
                     ? ""
                     : process.env.NEXT_PUBLIC_MY_SECRET_KEY; 
-                    console.log('PublicKey api kkk antes?', tokenId)
+                    // console.log('PublicKey api kkk antes?', tokenId)
     // const key = process.env.MY_SECRET_KEY?.toString()!;
-    console.log('tokenIIId',tokenIIId)
+    // console.log('tokenIIId',tokenIIId)
     const tokenIdDecrypt = CryptoJS.AES.decrypt(tokenIIId.toString(), keyTestUndefined).toString(CryptoJS.enc.Utf8); 
     // const plaintext = bytes.toString(CryptoJS.enc.Utf8);
     // const tokenId=plaintext;
-    console.log('PublicKey api kk depois?', tokenIdDecrypt)
+    // console.log('PublicKey api kk depois?', tokenIdDecrypt)
     return tokenIdDecrypt
 }
 

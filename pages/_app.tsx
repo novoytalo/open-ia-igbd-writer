@@ -1,15 +1,16 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 // import { SessionProvider, useSession } from "next-auth/react";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "./api/auth/[...nextauth]";
 import type { NextApiRequest, NextApiResponse } from "next";
 import AuthProvider from "../services/auth";
-
+import { Provider } from "react-redux";
+import store from "../store";
 export default function MyApp({ Component, pageProps }: AppProps) {
     return (
         <AuthProvider>
-            <Component {...pageProps} />
+            <Provider store={store}>
+                <Component {...pageProps} />
+            </Provider>
         </AuthProvider>
     );
 }

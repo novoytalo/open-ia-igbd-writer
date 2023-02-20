@@ -1,8 +1,6 @@
-import axios from 'axios'
-import type {NextApiRequest,NextApiResponse} from 'next'
-type Data = {
-    
-}
+import axios from "axios";
+import type { NextApiRequest, NextApiResponse } from "next";
+type Data = {};
 
 // https://images.igdb.com/igdb/image/upload/t_{size}/{hash}.jpg
 // cover_small	90 x 128	Fit
@@ -22,43 +20,38 @@ type Data = {
 //exemple link https://images.igdb.com/igdb/image/upload/t_screenshot_med_2x/dfgkfivjrhcksyymh9vw.jpg
 //the 2x get biggest image retina (DPR 2.0) sizes (cover_small_2x).
 
-export default async function handler (req:NextApiRequest, res:NextApiResponse){
-    const {gameId}=req.body
-    console.log('idGame?: ',gameId)
-    const data_text = `fields *;\r\nwhere game = ${gameId};`
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse
+) {
+    const { gameId } = req.body;
+    // console.log("idGame?: ", gameId);
+    const data_text = `fields *;\r\nwhere game = ${gameId};`;
     //we have here the id of image that return directly image path (only)
     //and id of game that return all imagens ref of that game (multiples)
     // const data_text = `fields *;\r\nwhere game = ${id};\r\nlimit 100;`
 
-
-
-
     try {
-      
-
-    if (req.method==='POST'){
-       const respost = await axios({
-            method:'post',
-            url: `${process.env.PUBLIC_NEST_DB_HOST_SCREENSHOTS}`,
-            headers:{
-                    'Client-ID': `${process.env.PUBLIC_NEST_ID_CLIENT}`,
-                    'Authorization' : `Bearer ${process.env.PUBLIC_NEST_BEARER}`,
-                    'Content-Type': 'text/plain', 
-    // 'Cookie': 'value'
-            },
-            data: data_text
-
-
-        }).then(resposta => {console.log( resposta.data); return res.status(200).json( resposta.data) })
-        // res.status(200).json(respost)
-        
+        if (req.method === "POST") {
+            const respost = await axios({
+                method: "post",
+                url: `${process.env.PRIVATE_IGBD_DB_HOST}/screenshots`,
+                headers: {
+                    "Client-ID": `${process.env.PUBLIC_NEST_ID_CLIENT}`,
+                    Authorization: `Bearer ${process.env.PUBLIC_NEST_BEARER}`,
+                    "Content-Type": "text/plain",
+                    // 'Cookie': 'value'
+                },
+                data: data_text,
+            }).then((resposta) => {
+                console.log(resposta.data);
+                return res.status(200).json(resposta.data);
+            });
+            // res.status(200).json(respost)
+        }
+    } catch (error) {
+        res.status(400).json({
+            error: `Erro call recived, but no method found!`,
+        });
     }
- 
-   }
-    
-    catch (error) {
-      
-      res.status(400).json({error:`Erro call recived, but no method found!`})
-    }
-
 }

@@ -7,7 +7,6 @@ import {
     onIdTokenChanged,
     User,
 } from "firebase/auth";
-import { Cookie } from "next-auth/core/lib/cookie";
 import React, {
     useState,
     useEffect,

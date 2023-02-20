@@ -1,6 +1,6 @@
 import axios from "axios";
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "../../styles/CardAlt.module.css";
 import { auth } from "../../services/firebase";
 import { UserContext } from "../../services/auth";
@@ -12,13 +12,16 @@ import {
     onIdTokenChanged,
 } from "firebase/auth";
 import { GetServerSideProps } from "next";
-export default function CardCompAlt(props: any) {
-    console.log("props getserverside: ", props.data);
+export default function CardCompAlt() {
+    // console.log("props CardCompAlt: ", props.token);
     const games = [1, 2, 3, 4];
     const titles = ["Valorant", "Mw2", "RPGs", "Actions"];
+    const [csrfToken, setCsrfToken] = useState("");
 
     return (
         <>
+            {" "}
+            <div>Tenso: {csrfToken.toString()}</div>
             <section className={`${styles.trywarp}`}>
                 {games.map((value, index) => {
                     return (
@@ -52,77 +55,4 @@ export default function CardCompAlt(props: any) {
             </section>
         </>
     );
-}
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-    // try {
-    const { token } = nookies.get(context);
-    // console.log("cooookies!:", cookies);
-
-    // onIdTokenChanged(auth, (user) => {
-    //     console.log("onIdTokenChanged inside: ", user);
-
-    //     async function newTryToken() {
-    //         if (user !== null) {
-    //             const token = await getIdToken(user);
-    //             return console.log("getServerSideProps2 token: ", token);
-    //         }
-    //     }
-    //     newTryToken();
-    // });
-
-    // const cookies = await context.req;
-
-    // } catch (error) {}
-    // const {  } = context;
-    // const { token } = req.cookies;
-
-    // onAuthStateChanged(auth, (user) => {
-    //     if (user !== null) {
-    //         console.log("logged in!: ", user);
-    //         // console.log(user);
-    //     } else {
-    //         return {
-    //             redirect: {
-    //                 destination: "/",
-    //                 permanent: false,
-    //             },
-    //         };
-    //     }
-    // });
-    // onIdTokenChanged(auth, (user) => {
-    //     console.log("onIdTokenChanged inside: ", user);
-    //     // setUserInfo(user);
-    //     (async function newTryToken() {
-    //         if (user !== null) {
-    //             const token = await getIdToken(user);
-    //             // setPassCookie(token);
-    //         } else {
-    //             return {
-    //                 redirect: {
-    //                     destination: "/",
-    //                     permanent: false,
-    //                 },
-    //             };
-    //         }
-    //     });
-    // });
-    // const respost = await axios({
-    //     method: "post",
-    //     url: `${process.env.PUBLIC_NEST_DB_HOST}`,
-    //     headers: {
-    //         "Client-ID": `${process.env.PUBLIC_NEST_ID_CLIENT}`,
-    //         Authorization: `Bearer ${process.env.PUBLIC_NEST_BEARER}`,
-    //         "Content-Type": "text/plain",
-    //     },
-    //     data: data_text,
-    // }).then((resposta) => {
-    //     console.log(resposta.data);
-    //     console.log('req body TTT:',req.headers.authorization)
-    //     return res.status(200).json(resposta.data);
-    // });
-
-    return {
-        props: { data: token }, // will be passed to the page component as props
-    };
 }

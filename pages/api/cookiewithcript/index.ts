@@ -18,8 +18,8 @@ export default async function handlerEncryptToken(
             ? ""
             : process.env.NEXT_PUBLIC_MY_SECRET_KEY;
     // const { token } = req.body;
-    console.log("token from createcookiewithcript", IdtokenFireBase);
-    console.log("tokenOnly: ", tokenOnly);
+    // console.log("token from createcookiewithcript", IdtokenFireBase);
+    // console.log("tokenOnly: ", tokenOnly);
     const ctx = { req, res };
     try {
         const tokenIdEncrypt = CryptoJS.AES.encrypt(

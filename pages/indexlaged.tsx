@@ -9,8 +9,6 @@ import { HtmlHTMLAttributes, useContext, useEffect, useRef } from "react";
 import { HtmlContext } from "next/dist/shared/lib/html-context";
 import Header from "./components/Header";
 import Card from "./components/CardComp";
-import { authOptions } from "./api/auth/[...nextauth]";
-import { getServerSession } from "next-auth";
 import { parseCookies, setCookie, destroyCookie } from "nookies";
 import { auth } from "../services/firebase";
 import { UserContext } from "../services/auth";
@@ -52,7 +50,7 @@ export default function Home(props: any) {
     async function callApiImages(gameId: number) {
         await axios({
             method: "post",
-            url: "./api/images_for_id_game",
+            url: "./api/game_all_information/images_for_id_game",
 
             data: { gameId: gameId },
         })

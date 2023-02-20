@@ -54,7 +54,7 @@ export default function Newtestauth() {
                 // setTokeTest(token);
                 // The signed-in user info.
                 const user = result.user;
-                console.log(user);
+
                 // setTokeTest(user);
                 // ...
             })
@@ -130,16 +130,12 @@ export default function Newtestauth() {
         await signInWithRedirect(auth, provider);
         await getRedirectResult(auth)
             .then((result: any) => {
-                console.log("entrou0");
                 // This gives you a Google Access Token. You can use it to access Google APIs.
                 const credential =
                     GoogleAuthProvider.credentialFromResult(result);
                 const token = credential?.accessToken;
 
                 // The signed-in user info.
-                const user = result.user;
-                console.log("entrou1");
-                console.log(user);
             })
             .catch((error) => {
                 // Handle Errors here.
@@ -150,11 +146,7 @@ export default function Newtestauth() {
                 // The AuthCredential type that was used.
                 const credential =
                     GoogleAuthProvider.credentialFromError(error);
-                // ...
-                console.log("error", credential);
-                console.log("entrou2");
             });
-        console.log("entrou3");
     }
     function outAuth() {
         const auth = getAuth();
@@ -232,7 +224,7 @@ export default function Newtestauth() {
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
+            // console.log(doc.id, " => ", doc.data());
         });
     }
     return (

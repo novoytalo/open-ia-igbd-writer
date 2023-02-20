@@ -2,6 +2,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { auth } from "../../../services/firebase-admin";
 import { openai, configuration } from "../../../services/openia";
+import decryptIdToken from "../cookiewithcript/auth-decryptIdToken";
 // openai.apiKey = 'SUA_CHAVE_API';
 
 // export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -36,14 +37,15 @@ export default async function OpenIAApi(
     console.log("animal: ", req.body);
 
     const tokenId = req.headers.authorization;
-    if (!tokenId) {
+    const tokenIdDecrypt = await decryptIdToken(req, res);
+    if (!tokenIdDecrypt) {
         return res.status(401).end("Not a valid user");
     }
     //verifie this line... not working, no return console.log()
     const decodedToken = await //    admin
     // .
     auth
-        .verifyIdToken(tokenId)
+        .verifyIdToken(tokenIdDecrypt)
         .then((decodedToken) => {
             console.log("api user data decoded", decodedToken);
             const uid = decodedToken.uid;
@@ -105,9 +107,10 @@ export default async function OpenIAApi(
         //         })
         //         .catch((error) => console.log(error));
         // }
-
+        
         const completion = await openai.createCompletion({
             model: "text-davinci-003",
+            max_tokens:3000,
             prompt: generatePrompt(animal),
             temperature: 0.6,
         });
@@ -131,11 +134,21 @@ export default async function OpenIAApi(
 function generatePrompt(animal: any) {
     const capitalizedAnimal =
         animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-    return `Suggest three names for an animal that is a superhero.
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: ${capitalizedAnimal}
-Names:`;
+    return `
+    Create and translate to {Brazilan portuguese} a text 5 paragraph (1 of introduction-make a joke about history of the game together, 2 about history of the game-make a joke, 1 emotional conclusion-make a joke).
+.
+    The base text is: 
+    slug: 'dead-or-alive',
+    storyline: 'A massive corporation known as DOATEC (Dead or Alive Tournament Executive Committee) host a fighting competition called the Dead or Alive World Combat Championship, where fighters from all over the world can compete for the title as champion and a vast amount of money.',
+    summary: "Dead or Alive is a fighting game and the first entry in Team Ninja's long-running Dead or Alive series. Its most defining features were its speed and countering system. Dead or Alive put an emphasis on speed, and relied more on simplistic commands and reaction time. Furthermore, its countering system was the first in the fighting genre to utilize different commands that corresponded to each type of attack. There are two kinds of holds, an Offensive Hold (OH) and a Defensive Hold (DH). The latter are executed by holding back or forward on the directional pad along with the guard input to either force away or counter-damage an opponent. The Playstation port of the game was later backported for arcade and titled Dead or Alive++.",
+    `
+    
+    
+//     `Suggest three names for an animal that is a superhero.
+// Animal: Cat
+// Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
+// Animal: Dog
+// Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
+// Animal: ${capitalizedAnimal}
+// Names:`;
 }
