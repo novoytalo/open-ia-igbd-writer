@@ -25,31 +25,51 @@ import {
     onIdTokenChanged,
 } from "firebase/auth";
 import { async } from "@firebase/util";
-
+import { useDispatch, useSelector } from "react-redux";
+import { thunkCsrfToken } from "../thunks/csrtokenTunks";
+import { AppDispatch } from "../store";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home(props: any) {
     ////////////////
+
     const [csrfToken, setCsrfToken] = useState("");
-    useEffect(() => {
-        axios({
-            method: "post",
-            url: "./api/csrftokengenerator",
-            // data: { animal: animal },
-            headers: {
-                "Content-Type": "application/json",
-                // I have to add cookie in the GET
-                // Cookie: cookies.cookies,
-                // Authorization: `Bearer ${passCookie}`,
-                Authorization: `Bearer ${props.token}`,
-            },
-        })
-            .then((resposta) => {
-                setCsrfToken(resposta.data);
-            })
-            .catch((error) => console.log(error));
-    }, [props.token]);
+    //THIS LOGIC GO TO REDUX ASYNC LOGIC, DELETE IT IN THE FUTURE!!
+    //Just for reference
+    // useEffect(() => {
+    //     axios({
+    //         method: "post",
+    //         url: "./api/csrftokengenerator",
+    //         // data: { animal: animal },
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             // I have to add cookie in the GET
+    //             // Cookie: cookies.cookies,
+    //             // Authorization: `Bearer ${passCookie}`,
+    //             Authorization: `Bearer ${props.token}`,
+    //         },
+    //     })
+    //         .then((resposta) => {
+    //             setCsrfToken(resposta.data);
+    //         })
+    //         .catch((error) => console.log(error));
+    // }, [props.token]);
     ////////////
+    const dispatch = useDispatch<AppDispatch>();
+    const apicsrfToken = useSelector(
+        (state: any) => state.sliceApiLoadState.data
+    );
+    useEffect(() => {
+        dispatch(thunkCsrfToken(props.token));
+        console.log("frontEnd thunps props.token:", props.token);
+    }, [props.token, dispatch]);
+
+    useEffect(() => {
+        setCsrfToken(apicsrfToken);
+        console.log("Frontend apicsrfToken!:", apicsrfToken);
+    }, [apicsrfToken]);
+
+    ////////////////////////////////////////
 
     function getToken() {
         console.log("passCookie", passCookie);

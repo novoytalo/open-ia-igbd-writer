@@ -16,15 +16,17 @@ export default async function handler(
     //comand line for the api
     const data_text = `fields *;where id < 1942;limit 100;`;
 
-    const tokenCsrfFromFrontEnd = req.headers["x-csrf-token"]!.toString();
-    const id = req.query.id;
-    const searchItem = req.body;
+    
 
     //decript token from frontend
 
     // console.log(plaintext);
 
     try {
+        const tokenCsrfFromFrontEnd = req.headers["x-csrf-token"]!.toString();
+    const id = req.query.id;
+    const searchItem = req.body;
+    console.log('tokenCsrfFromFrontEnd: ',tokenCsrfFromFrontEnd)
         // const tokenId:{value:string} = req.headers.cookie!
 
         const tokenIdDecrypt = await decryptIdToken(req, res);
