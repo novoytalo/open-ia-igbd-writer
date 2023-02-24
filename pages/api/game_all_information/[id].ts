@@ -2,10 +2,9 @@ import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { auth } from "../../../services/firebase-admin";
 import Tokens from "csrf";
-import CryptoJS from "crypto-js";
-import { type } from "os";
-// import { Auth, getAuth } from "firebase-admin/auth";
-// import {} from "../../../services/auth";
+
+
+//IT'S THE BASE ... CAN BE USED BUT I'M USING THE NEWEST BIG QUERY AS DEFAULT
 
 import decryptIdToken from "../cookiewithcript/auth-decryptIdToken";
 
@@ -16,17 +15,12 @@ export default async function handler(
     //comand line for the api
     const data_text = `fields *;where id < 1942;limit 100;`;
 
-    
-
-    //decript token from frontend
-
-    // console.log(plaintext);
-
     try {
         const tokenCsrfFromFrontEnd = req.headers["x-csrf-token"]!.toString();
     const id = req.query.id;
     const searchItem = req.body;
-    console.log('tokenCsrfFromFrontEnd: ',tokenCsrfFromFrontEnd)
+    console.log
+    // console.log('tokenCsrfFromFrontEnd1: ',tokenCsrfFromFrontEnd)
         // const tokenId:{value:string} = req.headers.cookie!
 
         const tokenIdDecrypt = await decryptIdToken(req, res);
@@ -57,7 +51,7 @@ export default async function handler(
         auth
             .verifyIdToken(tokenIdDecrypt)
             .then((decodedTokenFireBase) => {
-                console.log("api user data decoded", decodedTokenFireBase);
+                // console.log("api user data decoded", decodedTokenFireBase);
                 const uid = decodedTokenFireBase.uid;
                 return uid;
 

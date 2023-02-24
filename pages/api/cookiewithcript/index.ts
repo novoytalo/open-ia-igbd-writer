@@ -47,8 +47,8 @@ export default async function handlerEncryptToken(
             path: "/",
             secure: true,
             // httpOnly: true,
-            // sameSite: "strict",
-            // secret: process.env.NEXT_PUBLIC_COOKIE_SECRET,
+            sameSite: "strict",
+            secret: process.env.NEXT_PUBLIC_COOKIE_SECRET,
         });
         //And if you have some problem you can use cookie, another library, to solve it (need to install)
         // const serializedCookie = cookie.serialize('nome-do-cookie', 'valor-do-cookie');

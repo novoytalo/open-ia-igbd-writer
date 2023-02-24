@@ -27,49 +27,61 @@ import {
 import { async } from "@firebase/util";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkCsrfToken } from "../thunks/csrtokenTunks";
-import { AppDispatch } from "../store";
+import { thunkApiPlataforms } from "../thunks/apiplataformsTunks";
+import store, { AppDispatch } from "../store";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home(props: any) {
     ////////////////
-
-    const [csrfToken, setCsrfToken] = useState("");
-    //THIS LOGIC GO TO REDUX ASYNC LOGIC, DELETE IT IN THE FUTURE!!
-    //Just for reference
-    // useEffect(() => {
-    //     axios({
-    //         method: "post",
-    //         url: "./api/csrftokengenerator",
-    //         // data: { animal: animal },
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             // I have to add cookie in the GET
-    //             // Cookie: cookies.cookies,
-    //             // Authorization: `Bearer ${passCookie}`,
-    //             Authorization: `Bearer ${props.token}`,
-    //         },
-    //     })
-    //         .then((resposta) => {
-    //             setCsrfToken(resposta.data);
-    //         })
-    //         .catch((error) => console.log(error));
-    // }, [props.token]);
-    ////////////
+    console.log(
+        "csrfToken from get getServerSideProps",
+        props.csrfTokenGetServerSide
+    );
+    const [csrfToken, setCsrfToken] = useState(null);
     const dispatch = useDispatch<AppDispatch>();
     const apicsrfToken = useSelector(
         (state: any) => state.sliceApiLoadState.data
     );
+    const apiplataformsResults = useSelector(
+        (state: any) => state.slicePlataForms.data
+    );
+    //TESTE
     useEffect(() => {
-        dispatch(thunkCsrfToken(props.token));
-        console.log("frontEnd thunps props.token:", props.token);
+        if (props.token) {
+            dispatch(thunkCsrfToken(props.token));
+        }
     }, [props.token, dispatch]);
 
     useEffect(() => {
         setCsrfToken(apicsrfToken);
-        console.log("Frontend apicsrfToken!:", apicsrfToken);
     }, [apicsrfToken]);
 
     ////////////////////////////////////////
+
+    // if (props.token && csrfToken) {
+    //where dispatch?
+    //     thunkApiPlataforms({
+    //         csrfToken: apicsrfToken,
+    //         propstoken: props.token,
+    //     });
+    // }
+
+    useEffect(() => {
+        if (props.token && csrfToken) {
+            dispatch(
+                thunkApiPlataforms({
+                    csrfToken: apicsrfToken,
+                    propstoken: props.token,
+                })
+            );
+        }
+    }, [props.token, dispatch, csrfToken, apicsrfToken]);
+    // console.log("apiplataformsResults Seletor:", apiplataformsResults);
+    // useEffect(() => {
+    //     setCsrfToken(apicsrfToken);
+    //     console.log("Frontend apicsrfToken!:", apicsrfToken);
+    // }, [apicsrfToken]);
+    ////////
 
     function getToken() {
         console.log("passCookie", passCookie);
@@ -99,19 +111,6 @@ export default function Home(props: any) {
     }
 
     useEffect(() => {
-        //outside just a geral exemple
-        //const [data1, setData1] = useState(null);
-        //const [data2, setData2] = useState(null);
-        //inside useEffect
-        // const fetchData = async () => {
-        //     const [response1, response2] = await Promise.all([
-        //       axios.get("https://api.example.com/data1"),
-        //       axios.get("https://api.example.com/data2"),
-        //     ]);
-        //     setData1(response1.data);
-        //     setData2(response2.data);
-        //   };
-        //   fetchData();
         axios({
             method: "post",
             url: "./api/game_all_information/all",
@@ -119,10 +118,6 @@ export default function Home(props: any) {
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRF-Token": csrfToken,
-                // I have to add cookie in the GET
-                // Cookie: cookies.cookies,
-                // Authorization: `Bearer ${passCookie}`,
-                // Authorization: `Bearer ${passCookie}`,
                 Authorization: `Bearer ${props.token}`,
             },
         })
@@ -137,10 +132,6 @@ export default function Home(props: any) {
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRF-Token": csrfToken,
-                // I have to add cookie in the GET
-                // Cookie: cookies.cookies,
-                // Authorization: `Bearer ${passCookie}`,
-                // Authorization: `Bearer ${passCookie}`,
                 Authorization: `Bearer ${props.token}`,
             },
         })
@@ -155,10 +146,6 @@ export default function Home(props: any) {
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRF-Token": csrfToken,
-                // I have to add cookie in the GET
-                // Cookie: cookies.cookies,
-                // Authorization: `Bearer ${passCookie}`,
-                // Authorization: `Bearer ${passCookie}`,
                 Authorization: `Bearer ${props.token}`,
             },
             //my text search in this case "sonic"
@@ -190,9 +177,6 @@ export default function Home(props: any) {
             data: { animal: animal },
             headers: {
                 "Content-Type": "application/json",
-                // I have to add cookie in the GET
-                // Cookie: cookies.cookies,
-                // Authorization: `Bearer ${passCookie}`,
                 Authorization: `Bearer ${props.token}`,
             },
         })
@@ -219,7 +203,6 @@ export default function Home(props: any) {
                     name="viewport"
                     content="width=divice-width, initial-scale=1.0"
                 />
-                {/* <link rel="stylesheet" href="css/styles.css" /> */}
             </Head>
 
             <main>
@@ -236,7 +219,42 @@ export default function Home(props: any) {
                     callOpenIaText
                 </button>
                 <div>token on?{csrfToken}</div>
+                {/* <div
+                    onClick={() => {
+                        dispatch(thunkCsrfToken(props.token));
+                    }}
+                >
+                    Write a csrfTojken on Redux slice1
+                </div>
+                <div
+                    onClick={async () => {
+                        console.log(await apicsrfToken);
+                    }}
+                >
+                    Redux slice1 data
+                </div>
+                <div
+                    onClick={async () => {
+                        await dispatch(
+                            ////
+                            thunkApiPlataforms({
+                                csrfToken: apicsrfToken,
+                                propstoken: props.token,
+                            })
+                            ////
+                        );
+                    }}
+                >
+                    Write a csrfTojken on Redux slice2 Plataforms
+                </div> */}
             </main>
+            <div
+                onClick={() => {
+                    console.log(apiplataformsResults);
+                }}
+            >
+                dataPlataforms
+            </div>
         </>
     );
 }
@@ -252,6 +270,7 @@ export async function getServerSideProps(ctx: any) {
             },
         };
     }
+
     //first get imagens
 
     //second give coolors

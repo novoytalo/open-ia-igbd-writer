@@ -18,7 +18,7 @@ export default async function index(req:NextApiRequest,res:NextApiResponse) {
                 auth
                 .verifyIdToken(tokenId)
                 .then((decodedToken) => {
-                    console.log('api user data decoded',decodedToken)
+                    // console.log('api user data decoded',decodedToken)
                     const uid = decodedToken.uid;
                     return uid
                    

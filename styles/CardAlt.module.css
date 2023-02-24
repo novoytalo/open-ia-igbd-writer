@@ -2,23 +2,39 @@
     width: 100%;
     height: 480px;
     top: 200px;
-    padding: 20px;
+    padding: 50px 60px 60px 60px ;
+    /* padding-top: 50px;
+    padding-bottom: 60px; */
     display: grid;
     grid-auto-flow: column;
     gap: 20px;
     overflow-x: scroll;
     overflow-y: clip;
+
     margin-top: 50px;
+}
+.trywarp::-webkit-scrollbar{
+    width: 0px;
 }
 .thisJustWork {
     /* display: block; */
     width: 584px;
     height: 480px;
+    transition: all 0.5s ease;
+   
     /* background-color: brown; */
+}
+.thisJustWork:hover{
+    transform: scale(1.2) translate3d(0%, 0%, 100px); ;
+    z-index: 50;
+    box-shadow: black 20px;
+    /* transform: translate3d(0%, -10%, 100px); */
 }
 
 .CardWarp {
+    
 }
+
 
 .cardArchorContainer {
     position: relative;
@@ -26,6 +42,7 @@
     height: 240px; */
     /* overflow: hidden; */
     /* z-index: 50; */
+    
 }
 
 .imageContainer {
@@ -39,12 +56,20 @@
     object-fit: cover;
     object-position: 50% 50%;
     border-radius: 10px;
+   
  
     /*    
      width: 400px;
     height: 250px;
      */
 }
+
+
+
+/* .imageContainer:hover{
+    transform: translate3d(0%, -30%, 100px);
+    transform: scale(1.2);
+} */
 .titleContainer {
     display: flex;
     justify-content: center;
@@ -57,3 +82,33 @@
     background-color: rgba(102, 255, 0, 0.8);
     color: white;
 }
+
+
+.perspectiveWarper{
+    position: absolute;
+    perspective: 100px;
+    z-index: 100;
+    /* transition: 1000ms; */
+    /* overflow: hidden; */
+}
+/* .perspectiveWarper:hover{
+   
+    
+}
+.perspective:hover{
+    transform: rotateX(45deg);
+    background-color: blue;
+}
+
+
+.perspective{
+    
+    width: 600px;
+    height: 600px;
+    background-color: transparent;
+    perspective: 100px;
+    /* z-index: 100; */
+    /* overflow: hidden;
+    transition: 1000ms;
+    
+}  */

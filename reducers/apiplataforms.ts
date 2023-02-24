@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { thunkCsrfToken } from "./../thunks/csrtokenTunks";
+import { thunkApiPlataforms } from "./../thunks/apiplataformsTunks";
 
 interface initialStateTypes {
     data: null | string;
@@ -13,8 +13,9 @@ const initialState:initialStateTypes = {
     error: null,
 };
 
-const sliceApiLoadState = createSlice({
-    name: "sliceApiLoadState",
+
+const slicePlataForms = createSlice({
+    name: "slicePlataForms",
     initialState,
     reducers: {
         // setLoading: (state) => {
@@ -30,18 +31,18 @@ const sliceApiLoadState = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(thunkCsrfToken.pending, (state) => {
+            .addCase(thunkApiPlataforms.pending, (state) => {
                 state.isLoading = true;
                 state.error = null;
             })
-            .addCase(thunkCsrfToken.fulfilled, (state, action) => {
+            .addCase(thunkApiPlataforms.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.data = action.payload;
             })
-            .addCase(thunkCsrfToken.rejected, (state, action) => {
+            .addCase(thunkApiPlataforms.rejected, (state, action) => {
                 (state.isLoading = false), (state.error = action.payload);
             });
     },
 });
 
-export default sliceApiLoadState.reducer;
+export default slicePlataForms.reducer;

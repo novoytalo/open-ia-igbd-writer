@@ -8,7 +8,7 @@ import Tokens from "csrf";
  const decryptIdToken =async (req:NextApiRequest, res:NextApiResponse) => {
     const tokenId= req.headers.authorization===undefined?'':req.headers.authorization
     const tokenIIId = tokenId && tokenId.split(' ')[1]
-
+    
     const keyTestUndefined =
                 process.env.NEXT_PUBLIC_MY_SECRET_KEY === undefined
                     ? ""
@@ -20,6 +20,7 @@ import Tokens from "csrf";
     // const plaintext = bytes.toString(CryptoJS.enc.Utf8);
     // const tokenId=plaintext;
     // console.log('PublicKey api kk depois?', tokenIdDecrypt)
+
     return tokenIdDecrypt
 }
 

@@ -2,6 +2,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import styles from "../../styles/CardAlt.module.css";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../../services/firebase";
 import { UserContext } from "../../services/auth";
 import nookies from "nookies";
@@ -13,11 +14,52 @@ import {
 } from "firebase/auth";
 import { GetServerSideProps } from "next";
 export default function CardCompAlt() {
-    // console.log("props CardCompAlt: ", props.token);
-    const games = [1, 2, 3, 4];
+    const apiplataformsResults = useSelector(
+        (state: any) => state.slicePlataForms.data
+    );
+
+    const [itens, setItens] = useState([1, 2, 3, 4]);
+    const games = itens;
+    const urlNoServerImage =
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Postgres_Query.jpg/1920px-Postgres_Query.jpg";
+    const [urlImage, setUrlImage] = useState(urlNoServerImage);
+
+    useEffect(() => {
+        if (apiplataformsResults) {
+            const urlsImagensServer = apiplataformsResults[0].result.map(
+                (objeto: any) => {
+                    return objeto.platform_logo.url.replace(
+                        "thumb",
+                        "screenshot_med"
+                    );
+                }
+            );
+
+            setUrlImage(urlsImagensServer);
+
+            // console.log(
+            //     "apiplataformsResults?.platform_logo?.url:",
+            //     apiplataformsResults.platform_logo.url
+            // );
+            apiplataformsResults
+                ? setItens(apiplataformsResults[0].result)
+                : null;
+            console.log(
+                "apiplataformsResults inside useEffect",
+                apiplataformsResults
+            );
+        }
+    }, [apiplataformsResults]);
+
     const titles = ["Valorant", "Mw2", "RPGs", "Actions"];
     const [csrfToken, setCsrfToken] = useState("");
-
+    // function testUrls(value: any) {
+    //     const imgUrl = !value.platform_logo?.url
+    //         ? "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Postgres_Query.jpg/1920px-Postgres_Query.jpg"
+    //         : `https:${games.platform_logo.url}`;
+    //     return imgUrl;
+    //     return "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Postgres_Query.jpg/1920px-Postgres_Query.jpg";
+    // }
     return (
         <>
             {" "}
@@ -36,8 +78,9 @@ export default function CardCompAlt() {
                                 <Image
                                     className={`${styles.imageContainer}`}
                                     src={
-                                        // "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Postgres_Query.jpg/1920px-Postgres_Query.jpg"
-                                        "https://upload.wikimedia.org/wikipedia/commons/7/79/Andromeda_Galaxy_M31_-_Heic1502a_10k.jpg"
+                                        typeof urlImage === "string"
+                                            ? urlImage
+                                            : `https:${urlImage[index]}`
                                     }
                                     width={584}
                                     height={480}
@@ -45,6 +88,12 @@ export default function CardCompAlt() {
                                     // objectFit="cover"
                                     // objectPosition="center"
                                 ></Image>
+                                <div className={`${styles.perspectiveWarper}`}>
+                                    <div
+                                        className={`${styles.perspective}`}
+                                    ></div>
+                                </div>
+
                                 <h3 className={`${styles.titleContainer}`}>
                                     {titles[index]}
                                 </h3>

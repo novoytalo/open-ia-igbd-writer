@@ -47,7 +47,7 @@ export default async function OpenIAApi(
     auth
         .verifyIdToken(tokenIdDecrypt)
         .then((decodedToken) => {
-            console.log("api user data decoded", decodedToken);
+            // console.log("api user data decoded", decodedToken);
             const uid = decodedToken.uid;
             return uid
             // ...

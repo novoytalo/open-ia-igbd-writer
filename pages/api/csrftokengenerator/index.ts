@@ -29,7 +29,7 @@ export default async function handlerCsrfToken(
 
         auth.verifyIdToken(tokenIdDecrypt)
             .then((decodedTokenFireBase) => {
-                console.log("api user data decoded", decodedTokenFireBase);
+                // console.log("api user data decoded", decodedTokenFireBase);
                 const uid = decodedTokenFireBase.uid;
                 return uid;
 

@@ -11,7 +11,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['upload.wikimedia.org'],
+    domains: ['upload.wikimedia.org','images.igdb.com'],
   },
   // add to hot reaload work... windows
   // bug om depoiment... but in local this help to make hot reload works
