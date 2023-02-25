@@ -13,7 +13,7 @@ export default async function handler(
 ) {
     //comand line for the api
     const data_text = `query platforms "Platforms Games" {
-        fields name,platform_logo.url, platform_logo.height, platform_logo.width, websites.url;
+        fields name,platform_logo.url, platform_logo.height, platform_logo.width, platform_logo.url, versions.*;
         where name ~ *"PlayStation"*;
         limit 500;
         

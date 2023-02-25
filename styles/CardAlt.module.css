@@ -3,6 +3,7 @@
     height: 480px;
     top: 200px;
     padding: 50px 60px 60px 60px ;
+   
     /* padding-top: 50px;
     padding-bottom: 60px; */
     display: grid;
@@ -47,29 +48,19 @@
 
 .imageContainer {
     display: flex;
-    /* justify-content: center; */
     align-items: center;
+    /* width:584 ;
+    height:480; */
     margin: auto;
     position: absolute;
-    /* width: 100px;
-    height: auto; */
-    object-fit: cover;
+     /* object-fit: cover; */
+     object-fit: scale-down;
     object-position: 50% 50%;
-    border-radius: 10px;
+    border-radius: 10px; 
+    overflow: hidden;
    
- 
-    /*    
-     width: 400px;
-    height: 250px;
-     */
 }
 
-
-
-/* .imageContainer:hover{
-    transform: translate3d(0%, -30%, 100px);
-    transform: scale(1.2);
-} */
 .titleContainer {
     display: flex;
     justify-content: center;
