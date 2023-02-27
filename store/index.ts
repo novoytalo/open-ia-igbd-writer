@@ -2,12 +2,13 @@ import {configureStore,AnyAction} from '@reduxjs/toolkit';
 import rootReducer from '../reducers';
 import sliceApiLoadState from './../reducers/apistate'
 import slicePlataForms from './../reducers/apiplataforms'
-
+import sliceOpenAI from './../reducers/apiopenai'
 
 const store = configureStore({
     reducer:{
         slicePlataForms,
         sliceApiLoadState,
+        sliceOpenAI,
         rootReducer,
         
     },

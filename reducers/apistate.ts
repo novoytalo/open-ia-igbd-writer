@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { thunkCsrfToken } from "./../thunks/csrtokenTunks";
 
 interface initialStateTypes {
-    data: null | string;
+    // data: null | string;
+    data: null|string;
     isLoading: boolean;
     error: any;
 }

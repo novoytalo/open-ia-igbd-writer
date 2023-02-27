@@ -1,21 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { thunkApiPlataforms } from "./../thunks/apiplataformsTunks";
+import { thunkApiOpenAI } from "./../thunks/apiopenaiTunks";
 
 interface initialStateTypes {
-    data: null | any[];
+    data: null | string;
+    dataList:string[];
     isLoading: boolean;
     error: any;
 }
 
 const initialState:initialStateTypes = {
-    data: [],
+    data: null,
+    dataList:[],
     isLoading: false,
     error: null,
+
 };
 
 
-const slicePlataForms = createSlice({
-    name: "slicePlataForms",
+const sliceOpenAI = createSlice({
+    name: "sliceOpenAI",
     initialState,
     reducers: {
         // setLoading: (state) => {
@@ -31,18 +34,20 @@ const slicePlataForms = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(thunkApiPlataforms.pending, (state) => {
+            .addCase(thunkApiOpenAI.pending, (state) => {
                 state.isLoading = true;
                 state.error = null;
+                
             })
-            .addCase(thunkApiPlataforms.fulfilled, (state, action) => {
+            .addCase(thunkApiOpenAI.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.data = action.payload;
+                state.dataList.push(action.payload);
             })
-            .addCase(thunkApiPlataforms.rejected, (state, action) => {
+            .addCase(thunkApiOpenAI.rejected, (state, action) => {
                 (state.isLoading = false), (state.error = action.payload);
             });
     },
 });
 
-export default slicePlataForms.reducer;
+export default sliceOpenAI.reducer;

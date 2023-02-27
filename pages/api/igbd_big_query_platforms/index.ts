@@ -21,15 +21,7 @@ export default async function handler(
 
     try {
         const tokenCsrfFromFrontEnd = req.headers["x-csrf-token"]!.toString();
-        const id = req.query.id;
-        const test =  req.headers.authorization
-        const searchItem = req.body;
-        // console.log(' ummmlaota:',test)
-        // console.log("chegando agora: ", tokenCsrfFromFrontEnd);
-        // const tokenId:{value:string} = req.headers.cookie!
-
         const tokenIdDecrypt = await decryptIdToken(req, res);
-        // console.log ('tokenIdDecrypt vvv',tokenIdDecrypt)
         if (!tokenIdDecrypt) {
             return res.status(401).end("Not a valid user");
         }
@@ -56,11 +48,8 @@ export default async function handler(
         auth
             .verifyIdToken(tokenIdDecrypt)
             .then((decodedTokenFireBase) => {
-                // console.log("api user data decoded", decodedTokenFireBase);
                 const uid = decodedTokenFireBase.uid;
                 return uid;
-
-                // ...
             })
             .catch((error) => {
                 // Handle error

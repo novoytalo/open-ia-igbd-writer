@@ -13,13 +13,11 @@ export default function CardCompAlt() {
     const urlNoServerImage =
         "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Postgres_Query.jpg/1920px-Postgres_Query.jpg";
     const [itens, setItens] = useState(mocksCarCompAlt);
-    const games = itens;
-
     const [urlImage, setUrlImage] = useState(urlNoServerImage);
 
     useEffect(() => {
         if (apiplataformsResults) {
-            const urlsImagensServer = apiplataformsResults[0].result.map(
+            const urlsImagensServer = apiplataformsResults.map(
                 (objeto: ReturnData) => {
                     const concatReplace = `https:${objeto.platform_logo.url.replace(
                         "thumb",
