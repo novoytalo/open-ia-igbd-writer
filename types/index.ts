@@ -11,6 +11,7 @@ export interface User {
     width: number;
 }
 export interface Versions {
+  id:number;
   summary?:string;
 }
 export interface ReturnData {

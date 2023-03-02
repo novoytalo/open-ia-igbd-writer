@@ -68,8 +68,6 @@ export default async function handler(
                 },
                 data: data_text,
             }).then((resposta) => {
-                // console.log(resposta.data);
-                // console.log("req body TTT:", req.headers.authorization);
                 return res.status(200).json(resposta.data);
             });
         }

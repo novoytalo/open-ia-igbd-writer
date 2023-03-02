@@ -21,13 +21,10 @@ export default function PageConsoleInformation(props: any) {
     const router = useRouter();
 
     const handleThunkCsrfToken = useCallback(() => {
-        dispatch(thunkCsrfToken(props.token));
+        const promise = dispatch(thunkCsrfToken(props.token));
         console.log("USEEFFECT 1 Token");
+        return promise;
     }, [props.token, dispatch]);
-
-    useEffect(() => {
-        handleThunkCsrfToken();
-    }, [handleThunkCsrfToken]);
 
     ////////////////////////////////////////
 
@@ -39,12 +36,43 @@ export default function PageConsoleInformation(props: any) {
     const apicsrfToken = useSelector(
         (state: RootState) => state.sliceApiLoadState.data
     );
+
     const apiopenAi = useSelector(
         (state: RootState) => state.sliceOpenAI.dataList
     );
     const apiopenAiData = useSelector(
         (state: RootState) => state.sliceOpenAI.data
     );
+    const apiopenAiIsLoanding = useSelector(
+        (state: RootState) => state.sliceOpenAI.isLoading
+    );
+
+    const plataFormData: ReturnData = apiplataformsResults?.find(
+        (value: any) => {
+            return value.id === Number(idPg);
+        }
+    );
+
+    const apiplataformsResultsToTextMemo = useMemo(() => {
+        console.log(
+            "inside use memo apiplataformsResults: ",
+            plataFormData?.versions
+        );
+        if (plataFormData?.versions) {
+            return JSON.stringify(plataFormData.versions);
+        }
+        return "[]";
+    }, [plataFormData?.versions]);
+
+    useEffect(() => {
+        // const abortController = new AbortController();
+        const promise = handleThunkCsrfToken();
+        return () => {
+            promise.abort();
+            // abortController.abort(abortController);
+        };
+    }, [handleThunkCsrfToken]);
+
     const handleThunkApiPlataforms = useCallback(() => {
         if (apicsrfToken && props.token) {
             dispatch(
@@ -65,33 +93,27 @@ export default function PageConsoleInformation(props: any) {
         "apiplataformsResults component Display",
         apiplataformsResults
     );
-    const plataFormData: ReturnData = apiplataformsResults?.find(
-        (value: any) => {
-            return value.id === Number(idPg);
-        }
-    );
-
-    const handleThunkApiOpenAI = useCallback(() => {
-        if (plataFormData) {
-            plataFormData.versions.forEach((value, index) => {
-                const apiopenAiList = apiopenAi[index];
-                if (value && !apiopenAiList) {
-                    dispatch(
-                        thunkApiOpenAI({
-                            csrfToken: apicsrfToken,
-                            propstoken: props.token,
-                            textToApi: value.summary,
-                        })
-                    );
-                }
-            });
-        }
-        console.log("USEEFFECT 3 OpenAI");
-    }, [apicsrfToken, props.token, dispatch, apiopenAi, plataFormData]);
 
     useEffect(() => {
-        handleThunkApiOpenAI();
-    }, [handleThunkApiOpenAI]);
+        const dataString = JSON.parse(apiplataformsResultsToTextMemo);
+        if (dataString.length > 0 && props.token && apicsrfToken) {
+            dataString.forEach((value: any, index: number) => {
+                console.log("SUMMARY", value.summary);
+                dispatch(
+                    thunkApiOpenAI({
+                        csrfToken: apicsrfToken,
+                        propstoken: props.token,
+                        textToApi: value.summary,
+                    })
+                );
+            });
+            console.log("Inter UseEffect 3");
+        }
+        console.log("Out UseEffect 3");
+        //   return () => {
+        //     second
+        //   }
+    }, [apicsrfToken, props.token, apiplataformsResultsToTextMemo, dispatch]);
 
     //////////////////////////////////////////////////////////////
 
@@ -99,11 +121,12 @@ export default function PageConsoleInformation(props: any) {
         //use the Redux to get state loading... after
         return <div>Loading...</div>;
     }
-
+    console.log("apiopenAiapiopenAi!!!:", apiopenAi);
     // console.log("plataFormData.versions>:", plataFormData.versions[0].summary);
 
     return (
         <>
+            <button onClick={() => {}}>Test</button>
             <div>Console Plaform Information id: {idPg}</div>
             <div>{plataFormData.name}</div>
             <div>{plataFormData.platform_logo.url}</div>

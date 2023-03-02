@@ -6,12 +6,15 @@ interface initialStateTypes {
     data: null|string;
     isLoading: boolean;
     error: any;
+    // abortController:any;
 }
 
 const initialState:initialStateTypes = {
     data: null,
     isLoading: false,
     error: null,
+    // abortController:null,
+
 };
 
 const sliceApiLoadState = createSlice({
@@ -28,19 +31,29 @@ const sliceApiLoadState = createSlice({
         // setError: (state, action) => {
         //     (state.isLoading = false), (state.error = action.payload);
         // },
+        // aborFetch:(state)=>{
+        //     if(state.abortController){
+        //         state.abortController.abort();
+        //         state.abortController=null;
+        //     }
+        // }
     },
     extraReducers(builder) {
         builder
             .addCase(thunkCsrfToken.pending, (state) => {
                 state.isLoading = true;
                 state.error = null;
+                // state.abortController=new AbortController()
             })
             .addCase(thunkCsrfToken.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.data = action.payload;
+                // state.abortController=null;
             })
             .addCase(thunkCsrfToken.rejected, (state, action) => {
-                (state.isLoading = false), (state.error = action.payload);
+                state.isLoading = false; 
+                state.error = action.error.message;
+                // state.abortController=null
             });
     },
 });

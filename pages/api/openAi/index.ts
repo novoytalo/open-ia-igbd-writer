@@ -146,6 +146,8 @@ export default async function OpenIAApi(
     }
 }
 
+//ERROR RESPONSE TO FREE USER http://localhost:3000/api/openAi 429 (Too Many Requests)
+
 function generatePrompt(textToApi: string) { 
     //For now openAi is not give a valid link to Wikipedia if you request it to AI... some links is working... anothers just go to 
     //a error page from Wikipedia... 

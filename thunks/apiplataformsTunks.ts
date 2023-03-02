@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const fetchApi = async ({csrfToken, propstoken }: any) => {
+const fetchApi = async ({csrfToken, propstoken,signal }: any) => {
      const reponse= await axios({
         method: "post",
         url: "./api/igbd_big_query_platforms",
@@ -11,6 +11,7 @@ const fetchApi = async ({csrfToken, propstoken }: any) => {
             "X-CSRF-Token": csrfToken,
             Authorization: `Bearer ${propstoken}`,
         },
+        signal: signal,
     })
     
     return reponse.data[0].result;
@@ -18,9 +19,9 @@ const fetchApi = async ({csrfToken, propstoken }: any) => {
 
 export const thunkApiPlataforms = createAsyncThunk(
     "thunkApiPlataforms",
-    async ({csrfToken, propstoken}:any) => {
+    async ({csrfToken, propstoken}:any,{signal}) => {
         console.log('Passou Dois!')
-        const response = fetchApi({csrfToken, propstoken});
+        const response = fetchApi({csrfToken, propstoken,signal});
         return response;
     }
 );
